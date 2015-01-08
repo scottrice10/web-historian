@@ -6,9 +6,9 @@ var archive = require("../helpers/archive-helpers");
 var path = require('path');
 var res;
 
-archive.initialize({
-  list : path.join(__dirname, "/testdata/sites.txt")
-});
+// archive.initialize({
+//   list : path.join(__dirname, "/testdata/sites.txt")
+// });
 
 // Conditional async testing, akin to Jasmine's waitsFor()
 var waitForThen = function(test, cb) {

@@ -38,7 +38,14 @@ exports.isUrlInList = function(url, callback) {
   exports.readListOfUrls("sites.txt", callback);
 };
 
-exports.addUrlToList = function() {};
+exports.addUrlToList = function(url, absPath) {
+  fs.appendFile(absPath, url + "\n", function (err) {
+    if (err){
+      console.log(err);
+    }
+    console.log('The "data to append" was appended to file!');
+  });
+};
 
 exports.isURLArchived = function() {};
 

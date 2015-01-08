@@ -51,13 +51,13 @@ exports.handleRequest = function(req, res) {
 
       if (!inList) {
         console.log("sending loading.html...");
-        archive.addUrlToList(uri);
+        archive.addUrlToList(uri, archive.paths.list);
       } else {
-        res.writeHead(302, {
-          "Content-type": "text/html"
-        });
-        res.write(uri);
+        //res.write(archive.serveArchive(res, pathname, callback));
       }
+      res.writeHead(302, {
+        "Content-type": "text/html"
+      });
       res.end();
     });
   };
