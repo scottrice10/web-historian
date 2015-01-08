@@ -29,11 +29,18 @@ var callback = function(err, contents, res) {
 
 exports.handleRequest = function(req, res) {
   var pathname = url.parse(req.url).pathname;
+  var patt = /(^|\s)\/((https?:\/\/)?[\w-]+(\.[\w-]+)+\.+)+[a-z]{2,}/;
+  var isUrlLike = patt.test(pathname);
   if (req.method === "GET") {
     if (url.parse(req.url).pathname === "/") {
       httpHelper.serveAssets(res, '/index.html', callback);
-    } else {
+    } else if(isUrlLike){
       httpHelper.serveArchive(res, pathname, callback);
+    } else {
+      res.writeHead(404, {
+        "Content-type": "text/html"
+      });
+      res.end();
     }
   } else if (req.method === "POST") {
     var uri = "";
@@ -44,7 +51,7 @@ exports.handleRequest = function(req, res) {
 
     req.on('end', function() {
       uri = uri.split("=")[1];
-      var inList = archive.isUrlInList(uri, function(contents) {
+      var inList = archive.isUrlInList(archive.paths.list, function(contents) {
         var lines = contents.split("\n");
         return lines.indexOf(uri) > -1;
       });
