@@ -10,34 +10,23 @@ var router = {
   '/': httpHelper.serveAssets
 };
 
-// exports.handleRequest = function(req, res) {
-//   if (req.method === "GET") {
-//     if (url.parse(req.url).pathname === "/") {
-//       console.log(url.parse(req.url).pathname);
-//       res.writeHead(200, {
-//         "Content-type": "text/html"
-//       });
-//       res.write("<input>");
-//       res.end();
-//     }
-//   }
-// };
-
+var callback = function(err, contents, res) {
+  if (err) {
+    console.log(err);
+  } else {
+    res.writeHead(200, {
+      "Content-type": "text/html"
+    });
+    res.write(contents);
+    res.end();
+  }
+};
 
 exports.handleRequest = function(req, res) {
   if (req.method === "GET") {
+    console.log('pathname:', url.parse(req.url).pathname);
     if (url.parse(req.url).pathname === "/") {
-      fs.readFile(__dirname + "/public/index.html", function(err, contents) {
-        if (err) {
-          console.log(err);
-        } else {
-          res.writeHead(200, {
-            "Content-type": "text/html"
-          });
-          res.write(contents);
-          res.end();
-        }
-      });
+      httpHelper.serveAssets(res, '/index.html', callback);
     }
   }
 };
